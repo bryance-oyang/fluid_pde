@@ -93,22 +93,18 @@ void Grid::PointPrimToCons(const Array<double> &prim, Array<double> &cons)
 
 void Grid::Wavespeed(int dir)
 {
-	int di, dj, pdi, pdj;
+	int di, dj;
 	if (dir == 0) {
 		di = 1;
 		dj = 0;
-		pdi = 0;
-		pdj = 1;
 	} else {
 		di = 0;
 		dj = 1;
-		pdi = 1;
-		pdj = 0;
 	}
 
-	for (int i = NGHOST-pdi; i < nu-NGHOST+1; i++) {
+	for (int i = NGHOST; i < nu-NGHOST+1; i++) {
 		// face loop
-		for (int j = NGHOST-pdj; j < nv-NGHOST+1; j++) {
+		for (int j = NGHOST; j < nv-NGHOST+1; j++) {
 			double Lcs, Rcs, Lv, Rv;
 
 			Lcs = fmax(sqrt(gamma * Lprim(3,i,j) / Lprim(0,i,j)), sqrt(gamma * prim(3,i-di,j-dj) / prim(0,i-di,j-dj)));

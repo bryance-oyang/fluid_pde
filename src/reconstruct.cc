@@ -146,25 +146,21 @@ static inline void fancy_ppm(double *pql, double *pqr, double q0, double q1, dou
 
 void Grid::Reconstruct(int dir)
 {
-	int di, dj, pdi, pdj;
+	int di, dj;
 	if (dir == 0) {
 		di = 1;
 		dj = 0;
-		pdi = 0;
-		pdj = 1;
 	} else {
 		di = 0;
 		dj = 1;
-		pdi = 1;
-		pdj = 0;
 	}
 
 	int nu = prim.n[1];
 	int nv = prim.n[2];
 	for (int m = 0; m < NQUANT; m++) {
-		for (int i = NGHOST-1-pdi; i < nu-NGHOST+1+pdi; i++) {
+		for (int i = NGHOST-1; i < nu-NGHOST+1; i++) {
 			// cell loop
-			for (int j = NGHOST-1-pdj; j < nv-NGHOST+1+pdj; j++) {
+			for (int j = NGHOST-1; j < nv-NGHOST+1; j++) {
 				double ql, qr;
 				double q0 = prim(m,i-2*di,j-2*dj);
 				double q1 = prim(m,i-di,j-dj);

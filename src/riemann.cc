@@ -18,18 +18,9 @@ void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<do
 	int nu = J.n[1] - 1;
 	int nv = J.n[2] - 1;
 
-	int pdi, pdj;
-	if (dir == 0) {
-		pdi = 0;
-		pdj = 1;
-	} else {
-		pdi = 1;
-		pdj = 0;
-	}
-
-	for (int i = NGHOST-pdi; i < nu-NGHOST+1; i++) {
+	for (int i = NGHOST; i < nu-NGHOST+1; i++) {
 		//face loop
-		for (int j = NGHOST-pdj; j < nv-NGHOST+1; j++) {
+		for (int j = NGHOST; j < nv-NGHOST+1; j++) {
 			int m;
 			double Lw, Rw, Mw;
 			double Lv, Rv;
