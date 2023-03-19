@@ -16,7 +16,7 @@
 #include <cstdint>
 #include <cmath>
 
-#include "ws_ctube.h"
+#include "ws_ctube.hh"
 #include "grid.hh"
 
 class GridConverter {
