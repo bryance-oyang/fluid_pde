@@ -122,28 +122,6 @@ void Grid::Wavespeed(int dir)
 	}
 }
 
-void Grid::CalculateRiemannJ(int dir)
-{
-	Array<double> *J;
-	if (dir == 0) {
-		J = &Ju;
-	} else {
-		J = &Jv;
-	}
-
-	Reconstruct(dir);
-
-	PrimLim(Lprim);
-	PrimLim(Rprim);
-
-	PrimToCons(Lprim, Lcons);
-	PrimToCons(Rprim, Rcons);
-
-	Wavespeed(dir);
-
-	riemann::HLLC(Lprim, Lcons, Lw, Rprim, Rcons, Rw, *J, dir);
-}
-
 void Grid::CalculateJ(Array<double> &J, int dir)
 {
 	for (int m = 0; m < NQUANT; m++) {

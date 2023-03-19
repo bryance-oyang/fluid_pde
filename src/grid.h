@@ -102,7 +102,6 @@ public:
 
 	void Reconstruct(int dir);
 	void Wavespeed(int dir);
-	void CalculateRiemannJ(int dir);
 	void CalculateJ(Array<double> &J, int dir);
 	void CalculateSrc();
 	void DetermineDt(int dir);

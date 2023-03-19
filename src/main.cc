@@ -12,6 +12,7 @@
 #include <pthread.h>
 
 #include "grid.h"
+#include "riemann.h"
 #include "integrator.h"
 #include "broadcast.h"
 
@@ -55,6 +56,7 @@ public:
 	}
 
 	void take_timestep() {
+		Array<double> *J;
 		int &s = integrator.s;
 		if (tid == 0) {
 			s = 0;
@@ -65,7 +67,20 @@ public:
 
 		while (s < integrator.nstep) {
 			for (int dir = 0; dir < 2; dir++) {
-				local_grid.CalculateRiemannJ(dir);
+				if (dir == 0) {
+					J = &local_grid.Ju;
+				} else {
+					J = &local_grid.Jv;
+				}
+
+				local_grid.Reconstruct(dir);
+
+				local_grid.PrimLim(local_grid.Lprim);
+				local_grid.PrimLim(local_grid.Rprim);
+				local_grid.PrimToCons(local_grid.Lprim, local_grid.Lcons);
+				local_grid.PrimToCons(local_grid.Rprim, local_grid.Rcons);
+
+				local_grid.Wavespeed(dir);
 
 				// timestep determination
 				pthread_barrier_wait(barrier);
@@ -73,6 +88,8 @@ public:
 					global_grid.DetermineDt(dir);
 				}
 				pthread_barrier_wait(barrier);
+
+				riemann::HLLC(local_grid.Lprim, local_grid.Lcons, local_grid.Lw, local_grid.Rprim, local_grid.Rcons, local_grid.Rw, *J, dir);
 			}
 
 			// finalize timestep determination

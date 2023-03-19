@@ -3,8 +3,8 @@
 
 #define NTHREAD 1
 
-#define NU 128
-#define NV 128
+#define NU 512
+#define NV 512
 
 #define NSCALAR 1
 
