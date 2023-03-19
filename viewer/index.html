@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>fluid_pde</title>
+  </head>
+
+  <body>
+    <h1>fluid_pde</h1>
+    <canvas id="canvas"></canvas>
+  </body>
+
+  <script lang="javascript">
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d", {willReadFrequently: true});
+    let img_width = 0;
+    let img_height = 0;
+
+    async function setup_canvas() {
+      const img_width_re = /#define NU (.*)\n/;
+      const img_height_re = /#define NV (.*)\n/;
+
+      const config = await fetch("config.h")
+        .then((response) => response.text())
+
+      img_width = eval(config.match(img_width_re)[1]);
+      img_height = eval(config.match(img_height_re)[1]);
+
+      canvas.setAttribute("width", img_width);
+      canvas.setAttribute("height", img_height);
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function setup_draw() {
+      const websocket = new WebSocket("ws://localhost:9743");
+      websocket.binaryType = "arraybuffer";
+
+      websocket.onmessage = (event) => {
+        const data = new DataView(event.data)
+        const img = ctx.getImageData(0, 0, img_width, img_height);
+        const npix = img_width * img_height;
+        for (let i = 0; i < npix; i++) {
+          // red green blue alpha
+          img.data[4*i+0] = data.getUint8(3*i+0);
+          img.data[4*i+1] = data.getUint8(3*i+1);
+          img.data[4*i+2] = data.getUint8(3*i+2);
+          img.data[4*i+3] = 255;
+        }
+        ctx.putImageData(img, 0, 0);
+      };
+
+      websocket.onopen = (event) => {console.log("connected");};
+
+      websocket.onclose = (event) => {
+        setTimeout(setup_draw, 1000);
+      };
+    }
+
+    setup_canvas();
+    setup_draw();
+  </script>
+</html>
