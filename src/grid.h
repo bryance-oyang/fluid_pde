@@ -37,6 +37,9 @@ public:
 	int il;
 	int iu;
 	int iuf; // for face loops
+	int ilr; // for reconstruction
+	int iur; // for reconstruction
+
 	int jl;
 	int ju;
 

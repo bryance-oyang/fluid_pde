@@ -94,8 +94,8 @@ void Grid::InitCond()
 void Grid::CalculateSrc()
 {
 	for (int m = 0; m < NQUANT; m++) {
-		for (int i = 0; i < nu; i++) {
-			for (int j = 0; j < nv; j++) {
+		for (int i = il; i < iu; i++) {
+			for (int j = jl; j < ju; j++) {
 				src(m,i,j) = 0;
 			}
 		}

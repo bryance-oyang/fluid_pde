@@ -1,10 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define NTHREAD 1
+#define NTHREAD 8
 
-#define NU 512
-#define NV 256
+#define NU 320
+#define NV 320
 
 #define NSCALAR 0
 

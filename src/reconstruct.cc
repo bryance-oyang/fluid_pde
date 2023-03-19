@@ -156,7 +156,7 @@ void Grid::Reconstruct(int dir)
 	}
 
 	for (int m = 0; m < NQUANT; m++) {
-		for (int i = il-1; i < iu+1; i++) {
+		for (int i = ilr; i < iur; i++) {
 			// cell loop
 			for (int j = jl-1; j < ju+1; j++) {
 				double ql, qr;

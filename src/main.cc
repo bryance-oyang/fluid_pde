@@ -39,12 +39,20 @@ public:
 		int ni_per_thread = (global_grid.nu - 2*NGHOST + NTHREAD - 1) / NTHREAD;
 
 		local_grid.il = NGHOST + ni_per_thread * tid;
+		if (tid == 0) {
+			local_grid.ilr = local_grid.il - 1;
+		} else {
+			local_grid.ilr = local_grid.il;
+		}
+
 		if (tid == NTHREAD - 1) {
 			local_grid.iu = global_grid.nu - NGHOST;
 			local_grid.iuf = local_grid.iu + 1;
+			local_grid.iur = local_grid.iu + 1;
 		} else {
 			local_grid.iu = NGHOST + ni_per_thread * (tid + 1);
 			local_grid.iuf = local_grid.iu;
+			local_grid.iur = local_grid.iu;
 		}
 
 		local_grid.jl = NGHOST;
@@ -90,11 +98,13 @@ public:
 				}
 
 				local_grid.Reconstruct(dir);
+				pthread_barrier_wait(barrier);
 
 				local_grid.PrimLim(local_grid.Lprim);
 				local_grid.PrimLim(local_grid.Rprim);
 				local_grid.PrimToCons(local_grid.Lprim, local_grid.Lcons);
 				local_grid.PrimToCons(local_grid.Rprim, local_grid.Rcons);
+				pthread_barrier_wait(barrier);
 
 				local_grid.Wavespeed(dir);
 
@@ -129,6 +139,8 @@ public:
 			local_grid.CalculateSrc();
 
 			integrator.AddFluxDivSrc(&local_grid);
+			pthread_barrier_wait(barrier);
+
 			local_grid.ConsLim();
 			local_grid.ConsToPrim();
 
@@ -158,7 +170,9 @@ public:
 			if (tid == 0) {
 				printf("t = %.3e\tdt = %.3e\t%.2f%%\n", global_time, dt, 100*global_time/integrator.out_tf);
 				if (global_time >= out_time) {
+					global_grid.mutex.lock();
 					global_grid.broadcast_signal = true;
+					global_grid.mutex.unlock();
 					global_grid.cond.notify_all();
 					out_time = global_time + integrator.out_dt;
 				}
