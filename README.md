@@ -11,12 +11,11 @@ Explosive lens:
 
 ![explosive_lens](explosive_lens.png)
 
-Post blast:
+Random:
 
 ![post_blast](post_blast.png)
 
 ## Usage
-
 Build dependencies: g++ or similar for C++17, make, pthreads
 
 ```

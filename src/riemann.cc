@@ -11,49 +11,6 @@
 
 namespace riemann {
 
-void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array<double> &Lw_array,
-	const Array<double> &Rcons, const Array<double> &RJ_array, const Array<double> &Rw_array,
-	Array<double> &J, int dir)
-{
-	int nu = J.n[1] - 1;
-	int nv = J.n[2] - 1;
-
-	int pdi, pdj;
-	if (dir == 0) {
-		pdi = 0;
-		pdj = 1;
-	} else {
-		pdi = 1;
-		pdj = 0;
-	}
-
-	for (int m = 0; m < NQUANT; m++) {
-		for (int i = NGHOST-pdi; i < nu-NGHOST+1; i++) {
-			//face loop
-			for (int j = NGHOST-pdj; j < nv-NGHOST+1; j++) {
-				double Lq, Rq, LJ, RJ, Lw, Rw;
-
-				Lq = Lcons(m,i,j);
-				Rq = Rcons(m,i,j);
-				LJ = LJ_array(m,i,j);
-				RJ = RJ_array(m,i,j);
-				Lw = Lw_array(i,j);
-				Rw = Rw_array(i,j);
-
-				if (Lw == 0 && Rw == 0) {
-					J(m,i,j) = 0;
-				} else if (Rw <= 0) {
-					J(m,i,j) = RJ;
-				} else if (Lw >= 0) {
-					J(m,i,j) = LJ;
-				} else {
-					J(m,i,j) = (LJ*Rw - RJ*Lw + Rw*Lw*(Rq - Lq)) / (Rw - Lw);
-				}
-			}
-		}
-	}
-}
-
 void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<double> &Lw_array,
 	const Array<double> &Rprim, const Array<double> &Rcons, const Array<double> &Rw_array,
 	Array<double> &J, int dir)
@@ -186,5 +143,50 @@ void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<do
 		}
 	}
 }
+
+/*
+void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array<double> &Lw_array,
+	const Array<double> &Rcons, const Array<double> &RJ_array, const Array<double> &Rw_array,
+	Array<double> &J, int dir)
+{
+	int nu = J.n[1] - 1;
+	int nv = J.n[2] - 1;
+
+	int pdi, pdj;
+	if (dir == 0) {
+		pdi = 0;
+		pdj = 1;
+	} else {
+		pdi = 1;
+		pdj = 0;
+	}
+
+	for (int m = 0; m < NQUANT; m++) {
+		for (int i = NGHOST-pdi; i < nu-NGHOST+1; i++) {
+			//face loop
+			for (int j = NGHOST-pdj; j < nv-NGHOST+1; j++) {
+				double Lq, Rq, LJ, RJ, Lw, Rw;
+
+				Lq = Lcons(m,i,j);
+				Rq = Rcons(m,i,j);
+				LJ = LJ_array(m,i,j);
+				RJ = RJ_array(m,i,j);
+				Lw = Lw_array(i,j);
+				Rw = Rw_array(i,j);
+
+				if (Lw == 0 && Rw == 0) {
+					J(m,i,j) = 0;
+				} else if (Rw <= 0) {
+					J(m,i,j) = RJ;
+				} else if (Lw >= 0) {
+					J(m,i,j) = LJ;
+				} else {
+					J(m,i,j) = (LJ*Rw - RJ*Lw + Rw*Lw*(Rq - Lq)) / (Rw - Lw);
+				}
+			}
+		}
+	}
+}
+*/
 
 } // namespace riemann
