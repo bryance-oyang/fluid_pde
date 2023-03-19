@@ -11,9 +11,9 @@
 
 #include <mutex>
 #include <condition_variable>
-#include "array.h"
-#include "macro.h"
-#include "config.h"
+#include "array.hh"
+#include "macro.hh"
+#include "config.hh"
 
 #define NQUANT ((int)(4+(int)(NSCALAR)))
 

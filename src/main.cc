@@ -11,10 +11,10 @@
 #include <vector>
 #include <pthread.h>
 
-#include "grid.h"
-#include "riemann.h"
-#include "integrator.h"
-#include "broadcast.h"
+#include "grid.hh"
+#include "riemann.hh"
+#include "integrator.hh"
+#include "broadcast.hh"
 
 double global_time;
 double dt;

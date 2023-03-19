@@ -6,12 +6,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "grid.h"
-#include "riemann.h"
+#include "grid.hh"
+#include "riemann.hh"
 
-#include <math.h>
+#include <cmath>
 #include <cstdio>
-#include <stdlib.h>
 
 Grid::Grid(double &time, double &dt, double &step_time, double &step_dt)
 : time{time}, dt{dt}, step_time{step_time}, step_dt{step_dt}

@@ -9,7 +9,7 @@
 #ifndef INTEGRATOR_H
 #define INTEGRATOR_H
 
-#include "grid.h"
+#include "grid.hh"
 
 class Integrator {
 public:

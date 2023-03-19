@@ -6,8 +6,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include "riemann.h"
-#include "macro.h"
+#include "riemann.hh"
+#include "macro.hh"
 
 namespace riemann {
 

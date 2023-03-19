@@ -9,9 +9,9 @@
 #ifndef INIT_COND_H
 #define INIT_COND_H
 
-#include "../config.h"
-#include "../integrator.h"
-#include "../grid.h"
+#include "../config.hh"
+#include "../integrator.hh"
+#include "../grid.hh"
 
 #include <math.h>
 

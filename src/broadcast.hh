@@ -17,7 +17,7 @@
 #include <cmath>
 
 #include "ws_ctube.h"
-#include "grid.h"
+#include "grid.hh"
 
 class GridConverter {
 public:

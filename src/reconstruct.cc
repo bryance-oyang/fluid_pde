@@ -6,11 +6,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include <math.h>
+#include <cmath>
 #include <cstdio>
 
-#include "util.h"
-#include "grid.h"
+#include "util.hh"
+#include "grid.hh"
 
 static inline double vl_lim(double r)
 {

@@ -18,7 +18,7 @@
       const img_width_re = /#define NV (.*)\n/;
       const img_height_re = /#define NU (.*)\n/;
 
-      const config = await fetch("config.h")
+      const config = await fetch("config.hh")
         .then((response) => response.text())
 
       img_width = eval(config.match(img_width_re)[1]);

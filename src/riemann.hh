@@ -9,8 +9,8 @@
 #ifndef RIEMANN_H
 #define RIEMANN_H
 
-#include "array.h"
-#include "grid.h"
+#include "array.hh"
+#include "grid.hh"
 
 namespace riemann {
 

@@ -6,10 +6,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-#include <math.h>
+#include <cmath>
 
-#include "grid.h"
-#include "riemann.h"
+#include "grid.hh"
+#include "riemann.hh"
 
 // for [0, lim)
 static void determine_loop_limits(int tid, int lim, int *iil, int *iiu)
