@@ -3,10 +3,10 @@
 
 #define NTHREAD 1
 
-#define NU 3
-#define NV 4
+#define NU 512
+#define NV 256
 
-#define NSCALAR 1
+#define NSCALAR 0
 
 #define NGHOST 4
 

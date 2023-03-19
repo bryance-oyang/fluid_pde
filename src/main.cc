@@ -175,8 +175,8 @@ int main()
 	pthread_barrier_t barrier;
 
 	Grid global_grid{global_time, dt, step_time, step_dt};
-	global_grid.InitGrid();
 	global_grid.tid = -1;
+	global_grid.InitGrid();
 
 	Integrator integrator;
 	integrator.Property();

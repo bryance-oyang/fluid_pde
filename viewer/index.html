@@ -15,8 +15,8 @@
     let img_height = 0;
 
     async function setup_canvas() {
-      const img_width_re = /#define NU (.*)\n/;
-      const img_height_re = /#define NV (.*)\n/;
+      const img_width_re = /#define NV (.*)\n/;
+      const img_height_re = /#define NU (.*)\n/;
 
       const config = await fetch("config.h")
         .then((response) => response.text())
