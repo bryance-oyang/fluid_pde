@@ -26,13 +26,11 @@ public:
 	double out_dt;
 
 	// ssprk4
-	/*
-	int ssprk4;
-	Array rk4_fin_weight;
-	Array rk4_u2;
-	Array rk4_u3;
-	Array rk4_deriv3;
-	*/
+	bool ssprk4 = false;
+	Array<double> rk4_fin_weight;
+	Array<double> rk4_u2;
+	Array<double> rk4_u3;
+	Array<double> rk4_deriv3;
 
 	void Property();
 
@@ -41,7 +39,7 @@ public:
 	void Euler();
 	void RK2();
 	void SSPRK3();
-	//void SSPRK4();
+	void SSPRK4();
 
 	void AddFluxDivSrc(Grid *g);
 };

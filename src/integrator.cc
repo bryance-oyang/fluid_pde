@@ -37,7 +37,6 @@ void Integrator::AddFluxDivSrc(Grid *g)
 				g->cons(m,i,j) = weight(s,0)*g->cons_gen(m,i,j) + weight(s,1)*g->cons(m,i,j) + weight(s,2)*deriv*g->dt;
 
 				// ssprk4 logic
-				/*
 				if (ssprk4) {
 					if (s == 1) {
 						rk4_u2(m,i,j) = g->cons(m,i,j);
@@ -54,7 +53,6 @@ void Integrator::AddFluxDivSrc(Grid *g)
 							+ rk4_fin_weight(2) * rk4_deriv3(m,i,j) * g->dt;
 					}
 				}
-				*/
 			}
 		}
 	}
@@ -108,10 +106,9 @@ void Integrator::SSPRK3()
 	ComputeTimeWeight();
 }
 
-/*
 void Integrator::SSPRK4()
 {
-	ssprk4 = 1;
+	ssprk4 = true;
 	nstep = 5;
 	weight = Array<double>{nstep, 3};
 
@@ -141,6 +138,9 @@ void Integrator::SSPRK4()
 	rk4_fin_weight(1) = 0.096059710526147; // u3
 	rk4_fin_weight(2) = 0.063692468666290; // du3
 
+	rk4_u2 = Array<double>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
+	rk4_u3 = Array<double>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
+	rk4_deriv3 = Array<double>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
+
 	ComputeTimeWeight();
 }
-*/

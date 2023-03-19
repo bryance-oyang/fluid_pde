@@ -132,27 +132,16 @@ void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<do
 	}
 }
 
-/*
 void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array<double> &Lw_array,
 	const Array<double> &Rcons, const Array<double> &RJ_array, const Array<double> &Rw_array,
-	Array<double> &J, int dir)
+	Array<double> &J, int dir, int il, int iuf, int jl, int ju)
 {
-	int nu = J.n[1] - 1;
-	int nv = J.n[2] - 1;
-
-	int pdi, pdj;
-	if (dir == 0) {
-		pdi = 0;
-		pdj = 1;
-	} else {
-		pdi = 1;
-		pdj = 0;
-	}
+	(void)dir;
 
 	for (int m = 0; m < NQUANT; m++) {
-		for (int i = NGHOST-pdi; i < nu-NGHOST+1; i++) {
+		for (int i = il; i < iuf; i++) {
 			//face loop
-			for (int j = NGHOST-pdj; j < nv-NGHOST+1; j++) {
+			for (int j = jl; j < ju+1; j++) {
 				double Lq, Rq, LJ, RJ, Lw, Rw;
 
 				Lq = Lcons(m,i,j);
@@ -175,6 +164,5 @@ void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array
 		}
 	}
 }
-*/
 
 } // namespace riemann

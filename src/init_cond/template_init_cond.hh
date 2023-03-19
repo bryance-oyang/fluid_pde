@@ -30,8 +30,8 @@ void Integrator::Property()
 	// time integrator choice
 	//Euler();
 	//RK2();
-	SSPRK3();
-	//SSPRK4();
+	//SSPRK3();
+	SSPRK4();
 
 	// autocompute
 	out_dt = out_tf / (max_out - 1);

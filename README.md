@@ -16,6 +16,23 @@ Random:
 
 ![post_blast](post_blast.png)
 
+## Methods
+Threaded with shared memory.
+
+Time integrators:
+- Euler
+- RK2
+- SSPRK3 (3rd order strong-stability preserving Runge-Kutta)
+- SSPRK4 (4th order strong-stability preserving Runge-Kutta)
+
+Riemann solvers:
+- HLLC
+- HLLE
+
+Reconstruction methods (with van Leer limiter):
+- Piecewise linear (PLM)
+- Piecewise parabolic (PPM)
+
 ## Usage
 Build dependencies: g++ or similar for C++17, make, pthreads
 
