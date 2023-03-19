@@ -28,9 +28,6 @@ void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array
 	}
 
 	for (int m = 0; m < NQUANT; m++) {
-#if _OPENMP
-#pragma omp parallel for simd num_threads(NTHREAD) schedule(THREAD_SCHEDULE)
-#endif // _OPENMP
 		for (int i = NGHOST-pdi; i < nu-NGHOST+1; i++) {
 			//face loop
 			for (int j = NGHOST-pdj; j < nv-NGHOST+1; j++) {
@@ -73,9 +70,6 @@ void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<do
 		pdj = 0;
 	}
 
-#if _OPENMP
-#pragma omp parallel for simd num_threads(NTHREAD) schedule(THREAD_SCHEDULE)
-#endif // _OPENMP
 	for (int i = NGHOST-pdi; i < nu-NGHOST+1; i++) {
 		//face loop
 		for (int j = NGHOST-pdj; j < nv-NGHOST+1; j++) {
