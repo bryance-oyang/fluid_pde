@@ -21,13 +21,15 @@ void Integrator::ComputeTimeWeight()
 
 void Integrator::AddFluxDivSrc(Grid *g)
 {
-	int nu = g->nu;
-	int nv = g->nv;
+	int il = g->il;
+	int iu = g->iu;
+	int jl = g->jl;
+	int ju = g->ju;
 
 	for (int m = 0; m < NQUANT; m++) {
-		for (int i = NGHOST; i < nu-NGHOST; i++) {
+		for (int i = il; i < iu; i++) {
 			// cell loop
-			for (int j = NGHOST; j < nv-NGHOST; j++) {
+			for (int j = jl; j < ju; j++) {
 				double deriv;
 
 				deriv = g->fluxdiv(m,i,j) + g->src(m,i,j);

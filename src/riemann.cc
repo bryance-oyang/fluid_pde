@@ -13,14 +13,11 @@ namespace riemann {
 
 void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<double> &Lw_array,
 	const Array<double> &Rprim, const Array<double> &Rcons, const Array<double> &Rw_array,
-	Array<double> &J, int dir)
+	Array<double> &J, int dir, int il, int iuf, int jl, int ju)
 {
-	int nu = J.n[1] - 1;
-	int nv = J.n[2] - 1;
-
-	for (int i = NGHOST; i < nu-NGHOST+1; i++) {
+	for (int i = il; i < iuf; i++) {
 		//face loop
-		for (int j = NGHOST; j < nv-NGHOST+1; j++) {
+		for (int j = jl; j < ju+1; j++) {
 			int m;
 			double Lw, Rw, Mw;
 			double Lv, Rv;

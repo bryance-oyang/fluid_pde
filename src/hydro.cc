@@ -125,9 +125,9 @@ void Grid::Wavespeed(int dir)
 		dj = 1;
 	}
 
-	for (int i = NGHOST; i < nu-NGHOST+1; i++) {
+	for (int i = il; i < iuf; i++) {
 		// face loop
-		for (int j = NGHOST; j < nv-NGHOST+1; j++) {
+		for (int j = jl; j < ju+1; j++) {
 			double Lcs, Rcs, Lv, Rv;
 
 			Lcs = fmax(sqrt(gamma * Lprim(3,i,j) / Lprim(0,i,j)), sqrt(gamma * prim(3,i-di,j-dj) / prim(0,i-di,j-dj)));
@@ -188,9 +188,9 @@ void Grid::DetermineDt(int dir)
 void Grid::CalculateFluxDiv()
 {
 	for (int m = 0; m < NQUANT; m++) {
-		for (int i = NGHOST; i < nu-NGHOST; i++) {
+		for (int i = il; i < iu; i++) {
 			// cell loop
-			for (int j = NGHOST; j < nv-NGHOST; j++) {
+			for (int j = jl; j < ju; j++) {
 				fluxdiv(m,i,j) = (Ju(m,i,j) - Ju(m,i+1,j)) / du
 					+ (Jv(m,i,j) - Jv(m,i,j+1)) / dv;
 			}

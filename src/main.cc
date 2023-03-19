@@ -41,8 +41,10 @@ public:
 		local_grid.il = NGHOST + ni_per_thread * tid;
 		if (tid == NTHREAD - 1) {
 			local_grid.iu = global_grid.nu - NGHOST;
+			local_grid.iuf = local_grid.iu + 1;
 		} else {
 			local_grid.iu = NGHOST + ni_per_thread * (tid + 1);
+			local_grid.iuf = local_grid.iu;
 		}
 
 		local_grid.jl = NGHOST;
@@ -103,7 +105,9 @@ public:
 				}
 				pthread_barrier_wait(barrier);
 
-				riemann::HLLC(local_grid.Lprim, local_grid.Lcons, local_grid.Lw, local_grid.Rprim, local_grid.Rcons, local_grid.Rw, *J, dir);
+				riemann::HLLC(local_grid.Lprim, local_grid.Lcons,
+				local_grid.Lw, local_grid.Rprim, local_grid.Rcons, local_grid.Rw, *J, dir,
+				local_grid.il, local_grid.iuf, local_grid.jl, local_grid.ju);
 			}
 
 			// finalize timestep determination

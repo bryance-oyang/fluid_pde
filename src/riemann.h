@@ -14,13 +14,13 @@
 
 namespace riemann {
 
-void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array<double> &Lw_array,
-	const Array<double> &Rcons, const Array<double> &RJ_array, const Array<double> &Rw_array,
-	Array<double> &J, int dir);
-
 void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<double> &Lw_array,
 	const Array<double> &Rprim, const Array<double> &Rcons, const Array<double> &Rw_array,
-	Array<double> &J, int dir);
+	Array<double> &J, int dir, int il, int iuf, int jl, int ju);
+
+/*void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array<double> &Lw_array,
+	const Array<double> &Rcons, const Array<double> &RJ_array, const Array<double> &Rw_array,
+	Array<double> &J, int dir);*/
 
 } // namespace riemann
 

@@ -24,7 +24,7 @@ public:
 	Array<double> preimage;
 	Array<uint8_t> image;
 
-	GridConverter(const Grid &g) {
+	GridConverter() {
 		preimage = Array<double>{NU, NV};
 		image = Array<uint8_t>{NU, NV, 3};
 	}
@@ -67,7 +67,7 @@ public:
 	GridConverter converter;
 
 	Broadcast(Grid &g, int port, int max_nclient, int timeout_ms, double max_broadcast_fps)
-	: g{g}, converter{g} {
+	: g{g} {
 		if (start_ctube(port, max_nclient, timeout_ms, max_broadcast_fps)) {
 			start_thread();
 		}

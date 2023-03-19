@@ -36,6 +36,7 @@ public:
 	// for nonghost of thread division
 	int il;
 	int iu;
+	int iuf; // for face loops
 	int jl;
 	int ju;
 

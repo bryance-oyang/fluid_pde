@@ -155,12 +155,10 @@ void Grid::Reconstruct(int dir)
 		dj = 1;
 	}
 
-	int nu = prim.n[1];
-	int nv = prim.n[2];
 	for (int m = 0; m < NQUANT; m++) {
-		for (int i = NGHOST-1; i < nu-NGHOST+1; i++) {
+		for (int i = il-1; i < iu+1; i++) {
 			// cell loop
-			for (int j = NGHOST-1; j < nv-NGHOST+1; j++) {
+			for (int j = jl-1; j < ju+1; j++) {
 				double ql, qr;
 				double q0 = prim(m,i-2*di,j-2*dj);
 				double q1 = prim(m,i-di,j-dj);
