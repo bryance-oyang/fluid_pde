@@ -35,6 +35,20 @@ public:
 	IntegratorThread(int tid, Integrator &integrator, Grid &g, pthread_barrier_t *barrier)
 	: tid{tid}, integrator{integrator}, global_grid{g}, local_grid{global_time, dt, step_time, step_dt} {
 		this->barrier = barrier;
+
+		int ni_per_thread = (global_grid.nu - 2*NGHOST + NTHREAD - 1) / NTHREAD;
+
+		local_grid.il = NGHOST + ni_per_thread * tid;
+		if (tid == NTHREAD - 1) {
+			local_grid.iu = global_grid.nu - NGHOST;
+		} else {
+			local_grid.iu = NGHOST + ni_per_thread * (tid + 1);
+		}
+
+		local_grid.jl = NGHOST;
+		local_grid.ju = global_grid.nv - NGHOST;
+
+		local_grid.tid = tid;
 		local_grid.AttachReference(global_grid);
 		start();
 	}
@@ -158,6 +172,7 @@ int main()
 
 	Grid global_grid{global_time, dt, step_time, step_dt};
 	global_grid.InitGrid();
+	global_grid.tid = -1;
 
 	Integrator integrator;
 	integrator.Property();

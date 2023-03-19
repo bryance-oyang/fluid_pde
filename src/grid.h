@@ -32,6 +32,8 @@ public:
 	double du;
 	double dv;
 
+	int tid;
+	// for nonghost of thread division
 	int il;
 	int iu;
 	int jl;
@@ -102,7 +104,6 @@ public:
 
 	void Reconstruct(int dir);
 	void Wavespeed(int dir);
-	void CalculateJ(Array<double> &J, int dir);
 	void CalculateSrc();
 	void DetermineDt(int dir);
 	void CalculateFluxDiv();

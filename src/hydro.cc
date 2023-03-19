@@ -11,6 +11,20 @@
 #include "grid.h"
 #include "riemann.h"
 
+// for [0, lim)
+static void determine_loop_limits(int tid, int lim, int *iil, int *iiu)
+{
+	if (tid >= 0) {
+		int nii = (lim + NTHREAD - 1) / NTHREAD;
+		*iil = tid * nii;
+		*iiu = std::min((tid + 1)*nii, lim);
+	} else {
+		// global grid
+		*iil = 0;
+		*iiu = lim;
+	}
+}
+
 void Grid::ConsLim()
 {
 	ConsToPrim();
@@ -20,7 +34,10 @@ void Grid::ConsLim()
 
 void Grid::PrimLim(Array<double> &prim)
 {
-	for (int i = 0; i < prim.n[1]; i++) {
+	int iil, iiu;
+
+	determine_loop_limits(tid, prim.n[1], &iil, &iiu);
+	for (int i = iil; i < iiu; i++) {
 		for (int j = 0; j < prim.n[2]; j++) {
 			if (prim(0,i,j) < rho_floor) {
 				prim(0,i,j) = rho_floor;
@@ -41,7 +58,10 @@ void Grid::PrimLim(Array<double> &prim)
 
 void Grid::PrimToCons(const Array<double> &prim, Array<double> &cons)
 {
-	for (int i = 0; i < prim.n[1]; i++) {
+	int iil, iiu;
+
+	determine_loop_limits(tid, prim.n[1], &iil, &iiu);
+	for (int i = iil; i < iiu; i++) {
 		for (int j = 0; j < prim.n[2]; j++) {
 			double rho = prim(0,i,j);
 			double vsquared = SQR(prim(1,i,j)) + SQR(prim(2,i,j));
@@ -60,7 +80,10 @@ void Grid::PrimToCons(const Array<double> &prim, Array<double> &cons)
 
 void Grid::ConsToPrim()
 {
-	for (int i = 0; i < cons.n[1]; i++) {
+	int iil, iiu;
+
+	determine_loop_limits(tid, cons.n[1], &iil, &iiu);
+	for (int i = iil; i < iiu; i++) {
 		for (int j = 0; j < cons.n[2]; j++) {
 			double rho = cons(0,i,j);
 			double v1 = cons(1,i,j) / rho;
@@ -118,24 +141,6 @@ void Grid::Wavespeed(int dir)
 	}
 }
 
-void Grid::CalculateJ(Array<double> &J, int dir)
-{
-	for (int m = 0; m < NQUANT; m++) {
-		for (int i = 0; i < J.n[1]; i++) {
-			for (int j = 0; j < J.n[2]; j++) {
-				J(m,i,j) = prim(1+dir,i,j) * cons(m,i,j);
-
-				if (m == 1+dir) {
-					J(m,i,j) += prim(3,i,j);
-				}
-				if (m == 3) {
-					J(m,i,j) += prim(1+dir,i,j) * prim(3,i,j);
-				}
-			}
-		}
-	}
-}
-
 void __attribute__((weak)) Grid::CalculateSrc()
 {
 	for (int m = 0; m < NQUANT; m++) {
@@ -161,6 +166,7 @@ void Grid::DetermineDt(int dir)
 		ds = dv;
 	}
 
+	// not thread local
 	for (int i = NGHOST; i < nu-NGHOST; i++) {
 		// cell loop
 		for (int j = NGHOST; j < nv-NGHOST; j++) {
@@ -185,8 +191,8 @@ void Grid::CalculateFluxDiv()
 		for (int i = NGHOST; i < nu-NGHOST; i++) {
 			// cell loop
 			for (int j = NGHOST; j < nv-NGHOST; j++) {
-					fluxdiv(m,i,j) = (Ju(m,i,j) - Ju(m,i+1,j)) / du
-						+ (Jv(m,i,j) - Jv(m,i,j+1)) / dv;
+				fluxdiv(m,i,j) = (Ju(m,i,j) - Ju(m,i+1,j)) / du
+					+ (Jv(m,i,j) - Jv(m,i,j+1)) / dv;
 			}
 		}
 	}
