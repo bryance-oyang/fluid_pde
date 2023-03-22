@@ -1,6 +1,9 @@
 # fluid_pde
 Fun filled flowy fluid dynamics partial differential equation solver with 3rd
-order accuracy (PPM SSPRK3).
+order accuracy (PPM SSPRK4) and minimal dependencies.
+
+Cell center vs cell average is not distinguished so this is only 3rd order
+accurate even with PPM and SSPRK4.
 
 Supersonic wind:
 
@@ -17,7 +20,7 @@ Random:
 ![post_blast](post_blast.png)
 
 ## Methods
-Threaded with shared memory.
+Multithreaded with shared memory.
 
 Time integrators:
 - Euler

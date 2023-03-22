@@ -9,8 +9,8 @@
 #include <thread>
 #include <memory>
 #include <vector>
-#include <pthread.h>
 
+#include "barrier.hh"
 #include "grid.hh"
 #include "riemann.hh"
 #include "integrator.hh"
@@ -30,9 +30,9 @@ public:
 	std::unique_ptr<std::thread> thread;
 	Grid &global_grid;
 	Grid local_grid;
-	pthread_barrier_t *barrier;
+	ThreadBarrier *barrier;
 
-	IntegratorThread(int tid, Integrator &integrator, Grid &g, pthread_barrier_t *barrier)
+	IntegratorThread(int tid, Integrator &integrator, Grid &g, ThreadBarrier *barrier)
 	: tid{tid}, integrator{integrator}, global_grid{g}, local_grid{global_time, dt, step_time, step_dt} {
 		this->barrier = barrier;
 
@@ -87,7 +87,7 @@ public:
 			global_grid.cons_gen.copy_data_from(global_grid.cons);
 			dt = DBL_MAX;
 		}
-		pthread_barrier_wait(barrier);
+		barrier->wait();
 
 		while (s < integrator.nstep) {
 			for (int dir = 0; dir < 2; dir++) {
@@ -98,22 +98,22 @@ public:
 				}
 
 				local_grid.Reconstruct(dir);
-				pthread_barrier_wait(barrier);
+				barrier->wait();
 
 				local_grid.PrimLim(local_grid.Lprim);
 				local_grid.PrimLim(local_grid.Rprim);
 				local_grid.PrimToCons(local_grid.Lprim, local_grid.Lcons);
 				local_grid.PrimToCons(local_grid.Rprim, local_grid.Rcons);
-				pthread_barrier_wait(barrier);
+				barrier->wait();
 
 				local_grid.Wavespeed(dir);
 
 				// timestep determination
-				pthread_barrier_wait(barrier);
+				barrier->wait();
 				if (tid == 0 && s == 0) {
 					global_grid.DetermineDt(dir);
 				}
-				pthread_barrier_wait(barrier);
+				barrier->wait();
 
 				riemann::HLLC(local_grid.Lprim, local_grid.Lcons,
 				local_grid.Lw, local_grid.Rprim, local_grid.Rcons, local_grid.Rw, *J, dir,
@@ -132,23 +132,23 @@ public:
 					step_time = global_time + integrator.time_weight(s-1) * dt;
 				}
 			}
-			pthread_barrier_wait(barrier);
+			barrier->wait();
 
 			// hydro
 			local_grid.CalculateFluxDiv();
 			local_grid.CalculateSrc();
 
 			integrator.AddFluxDivSrc(&local_grid);
-			pthread_barrier_wait(barrier);
+			barrier->wait();
 
 			local_grid.ConsLim();
 			local_grid.ConsToPrim();
 
-			pthread_barrier_wait(barrier);
+			barrier->wait();
 			if (tid == 0) {
 				global_grid.Boundary(step_time);
 			}
-			pthread_barrier_wait(barrier);
+			barrier->wait();
 
 			local_grid.ConsLim();
 			local_grid.ConsToPrim();
@@ -156,13 +156,13 @@ public:
 			if (tid == 0) {
 				s++;
 			}
-			pthread_barrier_wait(barrier);
+			barrier->wait();
 		}
 
 		if (tid == 0) {
 			global_time += dt;
 		}
-		pthread_barrier_wait(barrier);
+		barrier->wait();
 	}
 
 	void thread_main() {
@@ -186,7 +186,7 @@ public:
 int main()
 {
 	std::vector<std::unique_ptr<IntegratorThread>> integrator_threads;
-	pthread_barrier_t barrier;
+	ThreadBarrier barrier{NTHREAD};
 
 	Grid global_grid{global_time, dt, step_time, step_dt};
 	global_grid.tid = -1;
@@ -197,7 +197,6 @@ int main()
 
 	Broadcast broadcast{global_grid, 9743, 2, 0, 24};
 
-	pthread_barrier_init(&barrier, NULL, NTHREAD);
 	for (int tid = 0; tid < NTHREAD; tid++) {
 		integrator_threads.push_back(std::make_unique<IntegratorThread>(tid, integrator, global_grid, &barrier));
 	}
@@ -207,6 +206,5 @@ int main()
 	}
 	broadcast.join();
 
-	pthread_barrier_destroy(&barrier);
 	return 0;
 }
