@@ -19,10 +19,6 @@
 
 class Grid {
 public:
-	std::mutex mutex;
-	std::condition_variable cond;
-	bool broadcast_signal = false;
-
 	int nu;
 	int nv;
 	double umin;

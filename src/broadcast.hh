@@ -57,24 +57,15 @@ public:
 	}
 };
 
-class Broadcast {
+class Broadcaster {
 public:
-	std::unique_ptr<std::thread> thread;
 	ws_ctube *ctube = NULL;
-	std::atomic<int> should_terminate;
-
 	Grid &g;
 	GridConverter converter;
 
-	Broadcast(Grid &g, int port, int max_nclient, int timeout_ms, double max_broadcast_fps)
+	Broadcaster(Grid &g, int port, int max_nclient, int timeout_ms, double max_broadcast_fps)
 	: g{g} {
-		if (start_ctube(port, max_nclient, timeout_ms, max_broadcast_fps)) {
-			start_thread();
-		}
-	}
-
-	~Broadcast() noexcept {
-		join();
+		start_ctube(port, max_nclient, timeout_ms, max_broadcast_fps);
 	}
 
 	bool start_ctube(int port, int max_nclient, int timeout_ms, double max_broadcast_fps)
@@ -91,51 +82,10 @@ public:
 		}
 	}
 
-	bool start_thread()
-	{
-		stop_thread();
-		should_terminate.store(0);
-		thread = std::make_unique<std::thread>(&Broadcast::thread_main, this);
-		return true;
-	}
-	void stop_thread()
-	{
-		if (thread) {
-			should_terminate.store(1);
-			if (thread->joinable()) {
-				thread->join();
-			}
-			thread.reset();
-		}
-	}
-
-	void join()
-	{
-		stop_thread();
-		stop_ctube();
-	}
-
-	void thread_main()
-	{
-		for (;;) {
-			{ /* lock camera mutex */
-				std::unique_lock<std::mutex> mutex{g.mutex};
-				while (!g.broadcast_signal) {
-					using namespace std::chrono_literals;
-					g.cond.wait_for(mutex, 200ms);
-
-					/* check if we should exit */
-					if (should_terminate.load()) {
-						return;
-					}
-				}
-				g.broadcast_signal = false;
-				converter.make_image(g);
-			} /* unlock camera mutex */
-
-			ws_ctube_broadcast(ctube, converter.image.data,
-				converter.image.bytes());
-		}
+	void broadcast() {
+		converter.make_image(g);
+		ws_ctube_broadcast(ctube, converter.image.data,
+			converter.image.bytes());
 	}
 };
 

@@ -31,9 +31,11 @@ public:
 	Grid &global_grid;
 	Grid local_grid;
 	ThreadBarrier *barrier;
+	Broadcaster &broadcaster;
 
-	IntegratorThread(int tid, Integrator &integrator, Grid &g, ThreadBarrier *barrier)
-	: tid{tid}, integrator{integrator}, global_grid{g}, local_grid{global_time, dt, step_time, step_dt} {
+	IntegratorThread(int tid, Integrator &integrator, Grid &g, ThreadBarrier *barrier, Broadcaster &broadcaster)
+	: tid{tid}, integrator{integrator}, global_grid{g},
+	local_grid{global_time, dt, step_time, step_dt}, broadcaster{broadcaster} {
 		this->barrier = barrier;
 
 		int ni_per_thread = (global_grid.nu - 2*NGHOST + NTHREAD - 1) / NTHREAD;
@@ -170,10 +172,7 @@ public:
 			if (tid == 0) {
 				printf("t = %.3e\tdt = %.3e\t%.2f%%\n", global_time, dt, 100*global_time/integrator.out_tf);
 				if (global_time >= out_time) {
-					global_grid.mutex.lock();
-					global_grid.broadcast_signal = true;
-					global_grid.mutex.unlock();
-					global_grid.cond.notify_all();
+					broadcaster.broadcast();
 					out_time = global_time + integrator.out_dt;
 				}
 			}
@@ -195,16 +194,15 @@ int main()
 	Integrator integrator;
 	integrator.Property();
 
-	Broadcast broadcast{global_grid, 9743, 2, 0, 24};
+	Broadcaster broadcaster{global_grid, 9743, 2, 0, 24};
 
 	for (int tid = 0; tid < NTHREAD; tid++) {
-		integrator_threads.push_back(std::make_unique<IntegratorThread>(tid, integrator, global_grid, &barrier));
+		integrator_threads.push_back(std::make_unique<IntegratorThread>(tid, integrator, global_grid, &barrier, broadcaster));
 	}
 
 	for (int tid = 0; tid < NTHREAD; tid++) {
 		integrator_threads[tid]->join();
 	}
-	broadcast.join();
 
 	return 0;
 }
