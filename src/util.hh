@@ -9,10 +9,12 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "macro.hh"
+
 namespace util {
 
-double fmin3(double a, double b, double c);
-double fmin4(double a, double b, double c, double d);
+number fmin3(number a, number b, number c);
+number fmin4(number a, number b, number c, number d);
 
 }
 

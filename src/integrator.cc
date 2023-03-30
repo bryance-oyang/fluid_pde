@@ -12,7 +12,7 @@
 
 void Integrator::ComputeTimeWeight()
 {
-	time_weight = Array<double>{nstep};
+	time_weight = Array<number>{nstep};
 
 	for (int i = 0; i < nstep; i++) {
 		time_weight(i) = (weight(i,1) + weight(i,2)) / (weight(i,0) + weight(i,1));
@@ -30,7 +30,7 @@ void Integrator::AddFluxDivSrc(Grid *g)
 		for (int i = il; i < iu; i++) {
 			// cell loop
 			for (int j = jl; j < ju; j++) {
-				double deriv;
+				number deriv;
 
 				deriv = g->fluxdiv(m,i,j) + g->src(m,i,j);
 
@@ -61,7 +61,7 @@ void Integrator::AddFluxDivSrc(Grid *g)
 void Integrator::Euler()
 {
 	nstep = 1;
-	weight = Array<double>{nstep, 3};
+	weight = Array<number>{nstep, 3};
 
 	weight(0,0) = 1;
 	weight(0,1) = 0;
@@ -73,7 +73,7 @@ void Integrator::Euler()
 void Integrator::RK2()
 {
 	nstep = 2;
-	weight = Array<double>{nstep, 3};
+	weight = Array<number>{nstep, 3};
 
 	weight(0,0) = 1;
 	weight(0,1) = 0;
@@ -89,7 +89,7 @@ void Integrator::RK2()
 void Integrator::SSPRK3()
 {
 	nstep = 3;
-	weight = Array<double>{nstep, 3};
+	weight = Array<number>{nstep, 3};
 
 	weight(0,0) = 1;
 	weight(0,1) = 0;
@@ -110,7 +110,7 @@ void Integrator::SSPRK4()
 {
 	ssprk4 = true;
 	nstep = 5;
-	weight = Array<double>{nstep, 3};
+	weight = Array<number>{nstep, 3};
 
 	weight(0,0) = 1;
 	weight(0,1) = 0;
@@ -132,15 +132,15 @@ void Integrator::SSPRK4()
 	weight(4,1) = 0.386708617503269;
 	weight(4,2) = 0.226007483236906;
 
-	rk4_fin_weight = Array<double>{3};
+	rk4_fin_weight = Array<number>{3};
 
 	rk4_fin_weight(0) = 0.517231671970585; // u2
 	rk4_fin_weight(1) = 0.096059710526147; // u3
 	rk4_fin_weight(2) = 0.063692468666290; // du3
 
-	rk4_u2 = Array<double>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
-	rk4_u3 = Array<double>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
-	rk4_deriv3 = Array<double>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
+	rk4_u2 = Array<number>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
+	rk4_u3 = Array<number>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
+	rk4_deriv3 = Array<number>{NQUANT, NU + 2*NGHOST, NV + 2*NGHOST};
 
 	ComputeTimeWeight();
 }

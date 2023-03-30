@@ -7,15 +7,16 @@
  */
 
 #include <cmath>
+#include "macro.hh"
 
 namespace util {
 
-double fmin3(double a, double b, double c)
+number fmin3(number a, number b, number c)
 {
 	return fmin(fmin(a,b),c);
 }
 
-double fmin4(double a, double b, double c, double d)
+number fmin4(number a, number b, number c, number d)
 {
 	return fmin(fmin(fmin(a,b),c),d);
 }

@@ -32,7 +32,7 @@ void Grid::ConsLim()
 	PrimToCons(prim, cons);
 }
 
-void Grid::PrimLim(Array<double> &prim)
+void Grid::PrimLim(Array<number> &prim)
 {
 	int iil, iiu;
 
@@ -56,15 +56,15 @@ void Grid::PrimLim(Array<double> &prim)
 	}
 }
 
-void Grid::PrimToCons(const Array<double> &prim, Array<double> &cons)
+void Grid::PrimToCons(const Array<number> &prim, Array<number> &cons)
 {
 	int iil, iiu;
 
 	determine_loop_limits(tid, prim.n[1], &iil, &iiu);
 	for (int i = iil; i < iiu; i++) {
 		for (int j = 0; j < prim.n[2]; j++) {
-			double rho = prim(0,i,j);
-			double vsquared = SQR(prim(1,i,j)) + SQR(prim(2,i,j));
+			number rho = prim(0,i,j);
+			number vsquared = SQR(prim(1,i,j)) + SQR(prim(2,i,j));
 
 			cons(0,i,j) = rho;
 			cons(1,i,j) = rho * prim(1,i,j);
@@ -85,10 +85,10 @@ void Grid::ConsToPrim()
 	determine_loop_limits(tid, cons.n[1], &iil, &iiu);
 	for (int i = iil; i < iiu; i++) {
 		for (int j = 0; j < cons.n[2]; j++) {
-			double rho = cons(0,i,j);
-			double v1 = cons(1,i,j) / rho;
-			double v2 = cons(2,i,j) / rho;
-			double ke = 0.5 * rho * (SQR(v1) + SQR(v2));
+			number rho = cons(0,i,j);
+			number v1 = cons(1,i,j) / rho;
+			number v2 = cons(2,i,j) / rho;
+			number ke = 0.5 * rho * (SQR(v1) + SQR(v2));
 
 			prim(0,i,j) = rho;
 			prim(1,i,j) = v1;
@@ -102,9 +102,9 @@ void Grid::ConsToPrim()
 	}
 }
 
-void Grid::PointPrimToCons(const Array<double> &prim, Array<double> &cons)
+void Grid::PointPrimToCons(const Array<number> &prim, Array<number> &cons)
 {
-	double rho = prim(0);
+	number rho = prim(0);
 		cons(0) = rho;
 		cons(1) = rho * prim(1);
 		cons(2) = rho * prim(2);
@@ -128,7 +128,7 @@ void Grid::Wavespeed(int dir)
 	for (int i = il; i < iuf; i++) {
 		// face loop
 		for (int j = jl; j < ju+1; j++) {
-			double Lcs, Rcs, Lv, Rv;
+			number Lcs, Rcs, Lv, Rv;
 
 			Lcs = fmax(sqrt(gamma * Lprim(3,i,j) / Lprim(0,i,j)), sqrt(gamma * prim(3,i-di,j-dj) / prim(0,i-di,j-dj)));
 			Rcs = fmax(sqrt(gamma * Rprim(3,i,j) / Rprim(0,i,j)), sqrt(gamma * prim(3,i,j) / prim(0,i,j)));
@@ -155,7 +155,7 @@ void __attribute__((weak)) Grid::CalculateSrc()
 void Grid::DetermineDt(int dir)
 {
 	int di, dj;
-	double ds;
+	number ds;
 	if (dir == 0) {
 		di = 1;
 		dj = 0;
@@ -170,8 +170,8 @@ void Grid::DetermineDt(int dir)
 	for (int i = NGHOST; i < nu-NGHOST; i++) {
 		// cell loop
 		for (int j = NGHOST; j < nv-NGHOST; j++) {
-			double w1, w2;
-			double cross_time;
+			number w1, w2;
+			number cross_time;
 
 			w1 = fabs(Rw(i,j));
 			w2 = fabs(Lw(i+di,j+dj));

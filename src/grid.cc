@@ -12,7 +12,7 @@
 #include <cmath>
 #include <cstdio>
 
-Grid::Grid(double &time, double &dt, double &step_time, double &step_dt)
+Grid::Grid(number &time, number &dt, number &step_time, number &step_dt)
 : time{time}, dt{dt}, step_time{step_time}, step_dt{step_dt}
 {
 	Property();
@@ -51,34 +51,34 @@ void Grid::AllocGrid()
 	dt = 0;
 
 	// coordinates
-	u_cc = Array<double>{nu};
-	v_cc = Array<double>{nv};
-	u_ufc = Array<double>{nu+1};
-	v_ufc = Array<double>{nv+1};
-	u_vfc = Array<double>{nu+1};
-	v_vfc = Array<double>{nv+1};
+	u_cc = Array<number>{nu};
+	v_cc = Array<number>{nv};
+	u_ufc = Array<number>{nu+1};
+	v_ufc = Array<number>{nv+1};
+	u_vfc = Array<number>{nu+1};
+	v_vfc = Array<number>{nv+1};
 
 	// hydro
-	cons = Array<double>{NQUANT, nu, nv};
-	prim = Array<double>{NQUANT, nu, nv};
-	cons_gen = Array<double>{NQUANT, nu, nv};
+	cons = Array<number>{NQUANT, nu, nv};
+	prim = Array<number>{NQUANT, nu, nv};
+	cons_gen = Array<number>{NQUANT, nu, nv};
 
-	fluxdiv = Array<double>{NQUANT, nu, nv};
-	src = Array<double>{NQUANT, nu, nv};
+	fluxdiv = Array<number>{NQUANT, nu, nv};
+	src = Array<number>{NQUANT, nu, nv};
 
 	// current
-	Ju = Array<double>{NQUANT, nu+1, nv+1};
-	Jv = Array<double>{NQUANT, nu+1, nv+1};
+	Ju = Array<number>{NQUANT, nu+1, nv+1};
+	Jv = Array<number>{NQUANT, nu+1, nv+1};
 
 	// reconstruction vars
-	Lprim = Array<double>{NQUANT, nu+1, nv+1};
-	Lcons = Array<double>{NQUANT, nu+1, nv+1};
-	Rprim = Array<double>{NQUANT, nu+1, nv+1};
-	Rcons = Array<double>{NQUANT, nu+1, nv+1};
+	Lprim = Array<number>{NQUANT, nu+1, nv+1};
+	Lcons = Array<number>{NQUANT, nu+1, nv+1};
+	Rprim = Array<number>{NQUANT, nu+1, nv+1};
+	Rcons = Array<number>{NQUANT, nu+1, nv+1};
 
 	// wavespeed
-	Lw = Array<double>{nu+1, nv+1};
-	Rw = Array<double>{nu+1, nv+1};
+	Lw = Array<number>{nu+1, nv+1};
+	Rw = Array<number>{nu+1, nv+1};
 }
 
 void Grid::AttachReference(Grid &g)

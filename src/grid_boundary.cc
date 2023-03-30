@@ -100,10 +100,10 @@ void Grid::PeriodicBoundaryLT()
 	}
 }
 
-void Grid::InflowBoundaryLeft(double rho, double vx, double vy, double press)
+void Grid::InflowBoundaryLeft(number rho, number vx, number vy, number press)
 {
-	Array<double> tmp_prim{NQUANT};
-	Array<double> tmp_cons{NQUANT};
+	Array<number> tmp_prim{NQUANT};
+	Array<number> tmp_cons{NQUANT};
 	tmp_prim(0) = rho;
 	tmp_prim(1) = vx;
 	tmp_prim(2) = vy;
@@ -119,11 +119,11 @@ void Grid::InflowBoundaryLeft(double rho, double vx, double vy, double press)
 	}
 }
 
-void Grid::InflowBoundaryRight(double rho, double vx, double vy, double press)
+void Grid::InflowBoundaryRight(number rho, number vx, number vy, number press)
 {
 	int i = nu-1;
-	Array<double> tmp_prim{NQUANT};
-	Array<double> tmp_cons{NQUANT};
+	Array<number> tmp_prim{NQUANT};
+	Array<number> tmp_cons{NQUANT};
 	tmp_prim(0) = rho;
 	tmp_prim(1) = vx;
 	tmp_prim(2) = vy;
@@ -139,10 +139,10 @@ void Grid::InflowBoundaryRight(double rho, double vx, double vy, double press)
 	}
 }
 
-void Grid::InflowBoundaryBot(double rho, double vx, double vy, double press)
+void Grid::InflowBoundaryBot(number rho, number vx, number vy, number press)
 {
-	Array<double> tmp_prim{NQUANT};
-	Array<double> tmp_cons{NQUANT};
+	Array<number> tmp_prim{NQUANT};
+	Array<number> tmp_cons{NQUANT};
 	tmp_prim(0) = rho;
 	tmp_prim(1) = vx;
 	tmp_prim(2) = vy;
@@ -158,11 +158,11 @@ void Grid::InflowBoundaryBot(double rho, double vx, double vy, double press)
 	}
 }
 
-void Grid::InflowBoundaryTop(double rho, double vx, double vy, double press)
+void Grid::InflowBoundaryTop(number rho, number vx, number vy, number press)
 {
 	int j = nv-1;
-	Array<double> tmp_prim{NQUANT};
-	Array<double> tmp_cons{NQUANT};
+	Array<number> tmp_prim{NQUANT};
+	Array<number> tmp_cons{NQUANT};
 	tmp_prim(0) = rho;
 	tmp_prim(1) = vx;
 	tmp_prim(2) = vy;

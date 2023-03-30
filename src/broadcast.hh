@@ -21,15 +21,15 @@
 
 class GridConverter {
 public:
-	Array<double> preimage;
+	Array<number> preimage;
 	Array<uint8_t> image;
 
 	GridConverter() {
-		preimage = Array<double>{NU, NV};
+		preimage = Array<number>{NU, NV};
 		image = Array<uint8_t>{NU, NV, 3};
 	}
 
-	double clip(double x)
+	number clip(number x)
 	{
 		return fmax(BROADCAST_PREIMAGE_MIN, fmin(BROADCAST_PREIMAGE_MAX, x));
 	}
@@ -63,12 +63,12 @@ public:
 	Grid &g;
 	GridConverter converter;
 
-	Broadcaster(Grid &g, int port, int max_nclient, int timeout_ms, double max_broadcast_fps)
+	Broadcaster(Grid &g, int port, int max_nclient, int timeout_ms, number max_broadcast_fps)
 	: g{g} {
 		start_ctube(port, max_nclient, timeout_ms, max_broadcast_fps);
 	}
 
-	bool start_ctube(int port, int max_nclient, int timeout_ms, double max_broadcast_fps)
+	bool start_ctube(int port, int max_nclient, int timeout_ms, number max_broadcast_fps)
 	{
 		stop_ctube();
 		ctube = ws_ctube_open(port, max_nclient, timeout_ms, max_broadcast_fps);

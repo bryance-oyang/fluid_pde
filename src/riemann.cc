@@ -11,19 +11,19 @@
 
 namespace riemann {
 
-void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<double> &Lw_array,
-	const Array<double> &Rprim, const Array<double> &Rcons, const Array<double> &Rw_array,
-	Array<double> &J, int dir, int il, int iuf, int jl, int ju)
+void HLLC(const Array<number> &Lprim, const Array<number> &Lcons, const Array<number> &Lw_array,
+	const Array<number> &Rprim, const Array<number> &Rcons, const Array<number> &Rw_array,
+	Array<number> &J, int dir, int il, int iuf, int jl, int ju)
 {
 	for (int i = il; i < iuf; i++) {
 		//face loop
 		for (int j = jl; j < ju+1; j++) {
 			int m;
-			double Lw, Rw, Mw;
-			double Lv, Rv;
-			double Lpress, Rpress, Mpress;
-			double Lrho, Rrho, rho2, rho3;
-			double Le, Re, e2, e3;
+			number Lw, Rw, Mw;
+			number Lv, Rv;
+			number Lpress, Rpress, Mpress;
+			number Lrho, Rrho, rho2, rho3;
+			number Le, Re, e2, e3;
 
 			Lw = Lw_array(i,j);
 			Rw = Rw_array(i,j);
@@ -132,9 +132,9 @@ void HLLC(const Array<double> &Lprim, const Array<double> &Lcons, const Array<do
 	}
 }
 
-void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array<double> &Lw_array,
-	const Array<double> &Rcons, const Array<double> &RJ_array, const Array<double> &Rw_array,
-	Array<double> &J, int dir, int il, int iuf, int jl, int ju)
+void HLLE(const Array<number> &Lcons, const Array<number> &LJ_array, const Array<number> &Lw_array,
+	const Array<number> &Rcons, const Array<number> &RJ_array, const Array<number> &Rw_array,
+	Array<number> &J, int dir, int il, int iuf, int jl, int ju)
 {
 	(void)dir;
 
@@ -142,7 +142,7 @@ void HLLE(const Array<double> &Lcons, const Array<double> &LJ_array, const Array
 		for (int i = il; i < iuf; i++) {
 			//face loop
 			for (int j = jl; j < ju+1; j++) {
-				double Lq, Rq, LJ, RJ, Lw, Rw;
+				number Lq, Rq, LJ, RJ, Lw, Rw;
 
 				Lq = Lcons(m,i,j);
 				Rq = Rcons(m,i,j);

@@ -21,12 +21,12 @@ class Grid {
 public:
 	int nu;
 	int nv;
-	double umin;
-	double umax;
-	double vmin;
-	double vmax;
-	double du;
-	double dv;
+	number umin;
+	number umax;
+	number vmin;
+	number vmax;
+	number du;
+	number dv;
 
 	int tid;
 	// for nonghost of thread division
@@ -41,45 +41,45 @@ public:
 
 	int reconstruct_order;
 
-	double &time;
-	double &dt;
+	number &time;
+	number &dt;
 	// time in middle of rk integration
-	double &step_time;
+	number &step_time;
 	// dt in middle of rk integration
-	double &step_dt;
+	number &step_dt;
 
-	double rho_floor;
-	double press_floor;
-	double gamma;
+	number rho_floor;
+	number press_floor;
+	number gamma;
 
-	Array<double> u_cc;
-	Array<double> v_cc;
-	Array<double> u_ufc;
-	Array<double> v_ufc;
-	Array<double> u_vfc;
-	Array<double> v_vfc;
+	Array<number> u_cc;
+	Array<number> v_cc;
+	Array<number> u_ufc;
+	Array<number> v_ufc;
+	Array<number> u_vfc;
+	Array<number> v_vfc;
 
-	Array<double> cons;
-	Array<double> prim;
-	Array<double> cons_gen;
+	Array<number> cons;
+	Array<number> prim;
+	Array<number> cons_gen;
 
-	Array<double> fluxdiv;
-	Array<double> src;
+	Array<number> fluxdiv;
+	Array<number> src;
 
-	Array<double> Ju;
-	Array<double> Jv;
+	Array<number> Ju;
+	Array<number> Jv;
 
 	// reconstruction vars
-	Array<double> Lprim;
-	Array<double> Lcons;
-	Array<double> Rprim;
-	Array<double> Rcons;
+	Array<number> Lprim;
+	Array<number> Lcons;
+	Array<number> Rprim;
+	Array<number> Rcons;
 
 	// wavespeed
-	Array<double> Lw;
-	Array<double> Rw;
+	Array<number> Lw;
+	Array<number> Rw;
 
-	Grid(double &time, double &dt, double &step_time, double &step_dt);
+	Grid(number &time, number &dt, number &step_time, number &step_dt);
 
 	// set grid properties
 	void Property();
@@ -98,9 +98,9 @@ public:
 
 	void ConsLim();
 	void ConsToPrim();
-	void PointPrimToCons(const Array<double> &prim, Array<double> &cons);
-	void PrimLim(Array<double> &prim);
-	void PrimToCons(const Array<double> &prim, Array<double> &cons);
+	void PointPrimToCons(const Array<number> &prim, Array<number> &cons);
+	void PrimLim(Array<number> &prim);
+	void PrimToCons(const Array<number> &prim, Array<number> &cons);
 
 	void Reconstruct(int dir);
 	void Wavespeed(int dir);
@@ -109,12 +109,12 @@ public:
 	void CalculateFluxDiv();
 
 	// boundary
-	void Boundary(double time);
+	void Boundary(number time);
 
-	void InflowBoundaryLeft(double rho, double vx, double vy, double press);
-	void InflowBoundaryRight(double rho, double vx, double vy, double press);
-	void InflowBoundaryBot(double rho, double vx, double vy, double press);
-	void InflowBoundaryTop(double rho, double vx, double vy, double press);
+	void InflowBoundaryLeft(number rho, number vx, number vy, number press);
+	void InflowBoundaryRight(number rho, number vx, number vy, number press);
+	void InflowBoundaryBot(number rho, number vx, number vy, number press);
+	void InflowBoundaryTop(number rho, number vx, number vy, number press);
 
 	void PeriodicBoundaryLeft();
 	void PeriodicBoundaryRight();

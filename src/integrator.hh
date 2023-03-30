@@ -15,22 +15,22 @@ class Integrator {
 public:
 	int s;
 	int nstep;
-	Array<double> weight;
-	Array<double> time_weight;
+	Array<number> weight;
+	Array<number> time_weight;
 
-	double cfl_num;
+	number cfl_num;
 
 	int max_epoch;
 	int max_out;
-	double out_tf;
-	double out_dt;
+	number out_tf;
+	number out_dt;
 
 	// ssprk4
 	bool ssprk4 = false;
-	Array<double> rk4_fin_weight;
-	Array<double> rk4_u2;
-	Array<double> rk4_u3;
-	Array<double> rk4_deriv3;
+	Array<number> rk4_fin_weight;
+	Array<number> rk4_u2;
+	Array<number> rk4_u3;
+	Array<number> rk4_deriv3;
 
 	void Property();
 

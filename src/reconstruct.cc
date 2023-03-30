@@ -12,17 +12,17 @@
 #include "util.hh"
 #include "grid.hh"
 
-static inline double vl_lim(double r)
+static inline number vl_lim(number r)
 {
-	double fabsr;
+	number fabsr;
 
 	fabsr = fabs(r);
 	return (r + fabsr) / (1 + fabsr);
 }
 
-static inline void plm(double *pql, double *pqr, double q1, double q2, double q3)
+static inline void plm(number *pql, number *pqr, number q1, number q2, number q3)
 {
-	double ql, qr, half_step;
+	number ql, qr, half_step;
 
 	if (q3 - q2 == 0) {
 		half_step = 0;
@@ -37,12 +37,12 @@ static inline void plm(double *pql, double *pqr, double q1, double q2, double q3
 	*pqr = qr;
 }
 
-static inline void ppm_lim_parabola(double *pql, double *pqr, double q0, double q1, double q2, double q3, double q4)
+static inline void ppm_lim_parabola(number *pql, number *pqr, number q0, number q1, number q2, number q3, number q4)
 {
-	double ql = *pql;
-	double qr = *pqr;
-	double curvl, curvr, curvc, curvf, curv;
-	double D;
+	number ql = *pql;
+	number qr = *pqr;
+	number curvl, curvr, curvc, curvf, curv;
+	number D;
 
 	D = 1.26;
 	if (PPM_STRICT_LIM) {
@@ -85,11 +85,11 @@ static inline void ppm_lim_parabola(double *pql, double *pqr, double q0, double 
 	*pqr = qr;
 }
 
-static inline void fancy_ppm(double *pql, double *pqr, double q0, double q1, double q2, double q3, double q4)
+static inline void fancy_ppm(number *pql, number *pqr, number q0, number q1, number q2, number q3, number q4)
 {
-	double ql, qr;
-	double curvl, curvr, curvf, curv;
-	double C;
+	number ql, qr;
+	number curvl, curvr, curvf, curv;
+	number C;
 
 	C = 1.26;
 	if (PPM_STRICT_LIM) {
@@ -159,12 +159,12 @@ void Grid::Reconstruct(int dir)
 		for (int i = ilr; i < iur; i++) {
 			// cell loop
 			for (int j = jl-1; j < ju+1; j++) {
-				double ql, qr;
-				double q0 = prim(m,i-2*di,j-2*dj);
-				double q1 = prim(m,i-di,j-dj);
-				double q2 = prim(m,i,j);
-				double q3 = prim(m,i+di,j+dj);
-				double q4 = prim(m,i+2*di,j+2*dj);
+				number ql, qr;
+				number q0 = prim(m,i-2*di,j-2*dj);
+				number q1 = prim(m,i-di,j-dj);
+				number q2 = prim(m,i,j);
+				number q3 = prim(m,i+di,j+dj);
+				number q4 = prim(m,i+2*di,j+2*dj);
 
 				if (reconstruct_order == 1) {
 					ql = q2;

@@ -63,13 +63,13 @@ void Grid::Property()
 // initial conditions of grid
 void Grid::InitCond()
 {
-	Array<double> tmp_prim(NQUANT);
-	Array<double> tmp_cons(NQUANT);
+	Array<number> tmp_prim(NQUANT);
+	Array<number> tmp_cons(NQUANT);
 
 	for (int i = 0; i < nu; i++) {
 		for (int j = 0; j < nv; j++) {
 			// coordinates (x, y)
-			double x, y;
+			number x, y;
 			x = u_cc(i);
 			y = v_cc(j);
 
@@ -102,7 +102,7 @@ void Grid::CalculateSrc()
 	}
 }
 
-void Grid::Boundary(double time)
+void Grid::Boundary(number time)
 {
 	//edges
 	PeriodicBoundaryLeft();

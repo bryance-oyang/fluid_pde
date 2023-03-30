@@ -16,12 +16,12 @@
 #include "integrator.hh"
 #include "broadcast.hh"
 
-double global_time;
-double dt;
-double step_time;
-double step_dt;
+number global_time;
+number dt;
+number step_time;
+number step_dt;
 
-double out_time;
+number out_time;
 
 class IntegratorThread {
 public:
@@ -82,7 +82,7 @@ public:
 	}
 
 	void take_timestep() {
-		Array<double> *J;
+		Array<number> *J;
 		int &s = integrator.s;
 		if (tid == 0) {
 			s = 0;
